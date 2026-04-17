@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convite Sophia - 5 Anos</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #d4b8e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .invite {
+    width: 480px;
+    min-height: 740px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.6),
+      0 8px 60px rgba(140, 90, 200, 0.35),
+      0 20px 100px rgba(100, 60, 180, 0.2);
+  }
+
+  /* ===================== BACKGROUND ===================== */
+  .bg-base {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(175deg,
+        #aee4f8 0%,
+        #c5d8f8 18%,
+        #d9c8f5 36%,
+        #e8c4ef 52%,
+        #f5cce4 68%,
+        #fddde8 82%,
+        #ffe8f0 100%
+      );
+    z-index: 0;
+  }
+
+  .bg-glow-top {
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 420px; height: 320px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.75) 0%, rgba(200,230,255,0.4) 40%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .bg-glow-mid {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px; height: 260px;
+    background: radial-gradient(ellipse, rgba(255,220,240,0.5) 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .bg-glow-bot {
+    position: absolute;
+    bottom: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 440px; height: 240px;
+    background: radial-gradient(ellipse, rgba(210,180,240,0.55) 0%, rgba(255,200,230,0.3) 40%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Dress silhouette */
+  .dress-silhouette {
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    z-index: 2; opacity: 0.08;
+    pointer-events: none;
+  }
+
+  /* Castle */
+  .castle {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; z-index: 2; opacity: 0.07;
+    pointer-events: none;
+  }
+
+  /* Glitter bubbles */
+  .glitter {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none; z-index: 2;
+    animation: glitter-float var(--dur,10s) ease-in-out infinite var(--delay,0s);
+  }
+  @keyframes glitter-float {
+    0%   { transform: translateY(0) scale(1);      opacity: 0.55; }
+    50%  { transform: translateY(-18px) scale(1.1); opacity: 0.85; }
+    100% { transform: translateY(0) scale(1);      opacity: 0.55; }
+  }
+
+  /* Stars */
+  .star-bg {
+    position: absolute;
+    color: rgba(255,255,255,0.85);
+    font-size: var(--sz, 12px);
+    z-index: 3; pointer-events: none;
+    animation: star-pulse var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+    text-shadow: 0 0 6px rgba(180,140,255,0.7);
+  }
+  @keyframes star-pulse {
+    0%,100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); }
+    50%      { opacity: 1;   transform: scale(1.3) rotate(20deg); }
+  }
+
+  /* ===================== BORDER ===================== */
+  .border-frame {
+    position: absolute; inset: 14px;
+    border: 1.5px solid rgba(180, 130, 220, 0.45);
+    border-radius: 3px; z-index: 10; pointer-events: none;
+  }
+  .border-frame::before {
+    content: '';
+    position: absolute; inset: 5px;
+    border: 1px solid rgba(255, 200, 230, 0.4);
+    border-radius: 2px;
+  }
+
+  .corner { position: absolute; width: 44px; height: 44px; z-index: 11; pointer-events: none; }
+  .corner svg { width: 44px; height: 44px; }
+  .corner-tl { top: 14px; left: 14px; }
+  .corner-tr { top: 14px; right: 14px; transform: scaleX(-1); }
+  .corner-bl { bottom: 14px; left: 14px; transform: scaleY(-1); }
+  .corner-br { bottom: 14px; right: 14px; transform: scale(-1); }
+
+  /* ===================== CONTENT ===================== */
+  .content {
+    position: relative; z-index: 5;
+    padding: 46px 48px 36px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  .sparkle-row {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 16px;
+  }
+  .sparkle-row span {
+    font-size: 18px;
+    animation: sparkle-float 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(200,150,255,0.7));
+  }
+  .sparkle-row span:nth-child(2) { animation-delay:.5s; }
+  .sparkle-row span:nth-child(3) { animation-delay:1s; font-size:26px; }
+  .sparkle-row span:nth-child(4) { animation-delay:.5s; }
+  .sparkle-row span:nth-child(5) { animation-delay:0s; }
+  @keyframes sparkle-float {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-6px) rotate(12deg); }
+  }
+
+  .age-badge { text-align: center; margin-bottom: 8px; }
+  .crown-emoji {
+    font-size: 50px; display: block;
+    animation: crown-glow 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(255, 200, 50, 0.9));
+  }
+  @keyframes crown-glow {
+    0%,100% { filter: drop-shadow(0 0 8px rgba(255,200,50,0.7)); }
+    50%      { filter: drop-shadow(0 0 22px rgba(255,220,80,1)); }
+  }
+  .age-number {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 74px; font-weight: 700; line-height: 1;
+    background: linear-gradient(135deg, #e8a0d0 0%, #c060b0 35%, #e8a0d0 65%, #a040a0 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    letter-spacing: -2px; display: block; margin-top: -6px;
+    filter: drop-shadow(0 2px 10px rgba(180,60,160,0.35));
+  }
+  .years-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 21px; color: #9b5cbe; letter-spacing: 2px; margin-top: -2px;
+  }
+
+  .name-line {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 33px; font-weight: 700;
+    letter-spacing: 5px; text-align: center; line-height: 1.1;
+    background: linear-gradient(90deg, #8b3ab8 0%, #c06ae0 50%, #8b3ab8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 6px;
+    animation: name-shimmer 4s ease-in-out infinite;
+  }
+  @keyframes name-shimmer {
+    0%,100% { filter: drop-shadow(0 0 6px rgba(160,80,220,0.4)); }
+    50%      { filter: drop-shadow(0 0 16px rgba(160,80,220,0.85)); }
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 16px;
+    color: #a06ab8; letter-spacing: 0.5px;
+    text-align: center; margin-bottom: 22px;
+  }
+
+  .divider {
+    width: 100%; display: flex; align-items: center; gap: 12px;
+    margin-bottom: 18px;
+  }
+  .divider-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(180,110,220,0.5), transparent);
+  }
+  .divider-gem { font-size: 16px; filter: drop-shadow(0 0 5px rgba(200,150,255,0.6)); }
+
+  .invite-intro {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px; color: #7b45a8;
+    text-align: center; line-height: 1.55; margin-bottom: 18px;
+  }
+
+  .carriage-wrap {
+    margin-bottom: 14px;
+    animation: carriage-roll 6s ease-in-out infinite;
+    filter: drop-shadow(0 4px 14px rgba(200, 140, 50, 0.45));
+  }
+  @keyframes carriage-roll {
+    0%,100% { transform: translateX(-8px) rotate(-1.5deg); }
+    50%      { transform: translateX(8px) rotate(1.5deg); }
+  }
+
+  .shoe-wrap {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .blue-shoe-emoji {
+    font-size: 32px;
+    animation: shoe-glow 3s ease-in-out infinite;
+  }
+  @keyframes shoe-glow {
+    0%,100% { filter: drop-shadow(0 0 6px rgba(140,200,255,0.7)); }
+    50%      { filter: drop-shadow(0 0 16px rgba(140,200,255,1)); }
+  }
+  .shoe-sparkle {
+    font-size: 16px;
+    animation: sparkle-float 2s ease-in-out infinite;
+  }
+
+  .info-card {
+    background: rgba(255, 255, 255, 0.52);
+    border: 1.5px solid rgba(180, 120, 220, 0.25);
+    border-radius: 10px;
+    padding: 20px 26px; width: 100%;
+    display: flex; flex-direction: column; gap: 14px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 24px rgba(160, 90, 200, 0.1);
+  }
+  .info-row { display: flex; align-items: flex-start; gap: 14px; }
+  .info-icon {
+    font-size: 22px; flex-shrink: 0; margin-top: 1px;
+    filter: drop-shadow(0 0 5px rgba(200,140,255,0.5));
+  }
+  .info-text { display: flex; flex-direction: column; }
+  .info-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 8.5px; letter-spacing: 2.5px;
+    color: #b070d0; text-transform: uppercase; margin-bottom: 2px;
+  }
+  .info-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17.5px; color: #4a2870; font-weight: 400; line-height: 1.35;
+  }
+  .info-value strong { font-weight: 600; color: #32185a; }
+
+  .footer-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 15px;
+    color: #9060b8; text-align: center; line-height: 1.65;
+  }
+  .footer-note em { color: #c060b0; font-weight: 600; font-style: normal; }
+
+
+</style>
+</head>
+<body>
+<div class="invite">
+
+  <div class="bg-base"></div>
+  <div class="bg-glow-top"></div>
+  <div class="bg-glow-mid"></div>
+  <div class="bg-glow-bot"></div>
+
+  <!-- Castle top silhouette -->
+  <svg class="castle" viewBox="0 0 480 160" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#7030a0" d="M60,160 L60,100 L75,100 L75,75 L85,75 L85,65 L90,55 L95,65 L95,75 L105,75 L105,100 L120,100 L120,65 L130,65 L130,48 L140,48 L140,65 L155,65 L155,32 L160,20 L165,32 L165,65 L180,65 L180,48 L190,48 L190,65 L200,65 L200,100 L215,100 L215,75 L225,75 L225,60 L230,48 L235,60 L235,75 L245,75 L245,100 L240,100 L240,160 Z M240,100 L240,70 L250,70 L250,52 L260,35 L270,52 L270,70 L280,70 L280,100 L300,100 L300,65 L310,65 L330,65 L330,100 L345,100 L345,75 L355,75 L355,60 L360,48 L365,60 L365,75 L375,75 L375,100 L390,100 L390,70 L400,70 L400,52 L410,52 L410,70 L420,70 L420,100 L420,160 L240,160 Z"/>
+    <rect fill="#7030a0" x="155" y="0" width="10" height="32" rx="1"/>
+    <polygon fill="#7030a0" points="162,0 155,22 170,22"/>
+    <rect fill="#7030a0" x="259" y="10" width="4" height="25"/>
+    <polygon fill="#7030a0" points="261,3 257,18 265,18"/>
+  </svg>
+
+  <!-- Dress silhouette bottom -->
+  <svg class="dress-silhouette" viewBox="0 0 340 220" width="340" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="170" cy="200" rx="160" ry="30" fill="#c06ad0"/>
+    <path fill="#c06ad0" d="M130,80 Q100,130 60,200 L280,200 Q240,130 210,80 Q190,60 170,55 Q150,60 130,80Z"/>
+    <ellipse cx="170" cy="55" rx="25" ry="30" fill="#c06ad0"/>
+  </svg>
+
+  <!-- Scattered sparkle stars -->
+  <span class="star-bg" style="top:6%;left:10%;--sz:14px;--dur:2.5s;--delay:0s;">✦</span>
+  <span class="star-bg" style="top:12%;left:82%;--sz:10px;--dur:3.2s;--delay:0.8s;">✦</span>
+  <span class="star-bg" style="top:22%;left:5%;--sz:8px;--dur:2.8s;--delay:1.5s;">✧</span>
+  <span class="star-bg" style="top:30%;left:91%;--sz:12px;--dur:3.5s;--delay:0.3s;">✦</span>
+  <span class="star-bg" style="top:48%;left:3%;--sz:9px;--dur:2.2s;--delay:1.2s;">✧</span>
+  <span class="star-bg" style="top:55%;left:93%;--sz:11px;--dur:3s;--delay:0.6s;">✦</span>
+  <span class="star-bg" style="top:70%;left:7%;--sz:8px;--dur:2.6s;--delay:2s;">✧</span>
+  <span class="star-bg" style="top:78%;left:88%;--sz:13px;--dur:3.3s;--delay:1s;">✦</span>
+  <span class="star-bg" style="top:88%;left:15%;--sz:9px;--dur:2.4s;--delay:0.4s;">✧</span>
+  <span class="star-bg" style="top:92%;left:78%;--sz:10px;--dur:2.9s;--delay:1.7s;">✦</span>
+
+  <!-- Glitter bubbles -->
+  <div class="glitter" style="width:8px;height:8px;background:rgba(200,150,255,0.55);top:15%;left:18%;--dur:7s;--delay:0s;"></div>
+  <div class="glitter" style="width:6px;height:6px;background:rgba(255,180,220,0.7);top:25%;left:75%;--dur:9s;--delay:2s;"></div>
+  <div class="glitter" style="width:10px;height:10px;background:rgba(160,210,255,0.5);top:40%;left:12%;--dur:8s;--delay:1s;"></div>
+  <div class="glitter" style="width:7px;height:7px;background:rgba(255,200,240,0.65);top:60%;left:80%;--dur:6s;--delay:3s;"></div>
+  <div class="glitter" style="width:5px;height:5px;background:rgba(210,160,255,0.6);top:75%;left:20%;--dur:10s;--delay:1.5s;"></div>
+  <div class="glitter" style="width:9px;height:9px;background:rgba(255,170,210,0.5);top:82%;left:70%;--dur:7.5s;--delay:0.5s;"></div>
+
+  <!-- Border frame -->
+  <div class="border-frame"></div>
+
+  <!-- Corner ornaments -->
+  <div class="corner corner-tl">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6,38 L6,6 L38,6" stroke="rgba(180,100,210,0.55)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <circle cx="6" cy="6" r="3" fill="rgba(200,130,230,0.7)"/>
+      <path d="M6,22 Q22,22 22,6" stroke="rgba(200,130,230,0.28)" stroke-width="1" fill="none"/>
+      <circle cx="6" cy="38" r="2" fill="rgba(200,130,230,0.4)"/>
+      <circle cx="38" cy="6" r="2" fill="rgba(200,130,230,0.4)"/>
+    </svg>
+  </div>
+  <div class="corner corner-tr">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6,38 L6,6 L38,6" stroke="rgba(180,100,210,0.55)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <circle cx="6" cy="6" r="3" fill="rgba(200,130,230,0.7)"/>
+      <path d="M6,22 Q22,22 22,6" stroke="rgba(200,130,230,0.28)" stroke-width="1" fill="none"/>
+      <circle cx="6" cy="38" r="2" fill="rgba(200,130,230,0.4)"/>
+      <circle cx="38" cy="6" r="2" fill="rgba(200,130,230,0.4)"/>
+    </svg>
+  </div>
+  <div class="corner corner-bl">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6,38 L6,6 L38,6" stroke="rgba(180,100,210,0.55)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <circle cx="6" cy="6" r="3" fill="rgba(200,130,230,0.7)"/>
+      <path d="M6,22 Q22,22 22,6" stroke="rgba(200,130,230,0.28)" stroke-width="1" fill="none"/>
+      <circle cx="6" cy="38" r="2" fill="rgba(200,130,230,0.4)"/>
+      <circle cx="38" cy="6" r="2" fill="rgba(200,130,230,0.4)"/>
+    </svg>
+  </div>
+  <div class="corner corner-br">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6,38 L6,6 L38,6" stroke="rgba(180,100,210,0.55)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <circle cx="6" cy="6" r="3" fill="rgba(200,130,230,0.7)"/>
+      <path d="M6,22 Q22,22 22,6" stroke="rgba(200,130,230,0.28)" stroke-width="1" fill="none"/>
+      <circle cx="6" cy="38" r="2" fill="rgba(200,130,230,0.4)"/>
+      <circle cx="38" cy="6" r="2" fill="rgba(200,130,230,0.4)"/>
+    </svg>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <div class="sparkle-row">
+      <span>✨</span><span>🌸</span><span>👑</span><span>🌸</span><span>✨</span>
+    </div>
+
+    <div class="age-badge">
+      <span class="crown-emoji">👑</span>
+      <span class="age-number">5</span>
+      <span class="years-text">anos mágicos</span>
+    </div>
+
+    <div class="name-line">SOPHIA</div>
+    <div class="tagline">a nossa pequena princesa Cinderela</div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-gem">💎</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="invite-intro">
+      Está convidado/a para celebrar connosco<br>
+      este dia encantado e cheio de magia!
+    </div>
+
+    <!-- Pumpkin Carriage SVG - Cinderella blue & silver -->
+    <div class="carriage-wrap">
+      <svg width="200" height="110" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="pumpkin-shine" cx="35%" cy="30%" r="60%">
+            <stop offset="0%" stop-color="white" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <linearGradient id="silver-trim" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#F0F4FA"/>
+            <stop offset="50%" stop-color="#B8C8DC"/>
+            <stop offset="100%" stop-color="#8AA0BE"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Wheels (silver) -->
+        <circle cx="48" cy="88" r="16" fill="none" stroke="url(#silver-trim)" stroke-width="3"/>
+        <circle cx="48" cy="88" r="10" fill="none" stroke="rgba(200,215,235,0.9)" stroke-width="1.5"/>
+        <circle cx="48" cy="88" r="3" fill="#8AA0BE"/>
+        <line x1="48" y1="72" x2="48" y2="104" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+        <line x1="32" y1="88" x2="64" y2="88" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+        <line x1="36" y1="76" x2="60" y2="100" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+        <line x1="60" y1="76" x2="36" y2="100" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+
+        <circle cx="152" cy="88" r="16" fill="none" stroke="url(#silver-trim)" stroke-width="3"/>
+        <circle cx="152" cy="88" r="10" fill="none" stroke="rgba(200,215,235,0.9)" stroke-width="1.5"/>
+        <circle cx="152" cy="88" r="3" fill="#8AA0BE"/>
+        <line x1="152" y1="72" x2="152" y2="104" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+        <line x1="136" y1="88" x2="168" y2="88" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+        <line x1="140" y1="76" x2="164" y2="100" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+        <line x1="164" y1="76" x2="140" y2="100" stroke="rgba(180,200,225,0.95)" stroke-width="1.5"/>
+
+        <!-- Axle (silver) -->
+        <line x1="48" y1="88" x2="152" y2="88" stroke="#8AA0BE" stroke-width="2.5"/>
+
+        <!-- Pumpkin body - segments in Cinderella blue -->
+        <!-- Far left segment -->
+        <ellipse cx="63" cy="66" rx="14" ry="22" fill="#3A6AA8"/>
+        <!-- Far right segment -->
+        <ellipse cx="137" cy="66" rx="14" ry="22" fill="#3A6AA8"/>
+        <!-- Left-center segment -->
+        <ellipse cx="80" cy="63" rx="18" ry="28" fill="#4A7EC0"/>
+        <!-- Right-center segment -->
+        <ellipse cx="120" cy="63" rx="18" ry="28" fill="#4A7EC0"/>
+        <!-- Center segment (tallest, brightest) -->
+        <ellipse cx="100" cy="60" rx="22" ry="32" fill="#5E94D4"/>
+        <ellipse cx="100" cy="60" rx="22" ry="32" fill="url(#pumpkin-shine)"/>
+
+        <!-- Segment seams (subtle) -->
+        <path d="M100,30 Q92,60 100,92" stroke="rgba(30,60,110,0.3)" stroke-width="0.8" fill="none"/>
+        <path d="M100,30 Q108,60 100,92" stroke="rgba(30,60,110,0.3)" stroke-width="0.8" fill="none"/>
+
+        <!-- Windows (bright cream/white with gold frame) -->
+        <ellipse cx="100" cy="58" rx="11" ry="15" fill="rgba(255,250,230,0.75)" stroke="#E8C860" stroke-width="1.5"/>
+        <ellipse cx="78" cy="62" rx="7" ry="10" fill="rgba(255,250,230,0.55)" stroke="#E8C860" stroke-width="1"/>
+        <ellipse cx="122" cy="62" rx="7" ry="10" fill="rgba(255,250,230,0.55)" stroke="#E8C860" stroke-width="1"/>
+
+        <!-- Window shine -->
+        <ellipse cx="97" cy="51" rx="4" ry="5" fill="rgba(255,255,255,0.75)"/>
+        <ellipse cx="76" cy="56" rx="2.5" ry="3.5" fill="rgba(255,255,255,0.6)"/>
+        <ellipse cx="120" cy="56" rx="2.5" ry="3.5" fill="rgba(255,255,255,0.6)"/>
+
+        <!-- Pumpkin stem (silver/grey) -->
+        <rect x="97" y="26" width="6" height="10" rx="3" fill="#7088AA"/>
+        <!-- Leaf curl (soft blue-green) -->
+        <path d="M103,30 Q114,22 110,32 Q106,36 103,33" fill="#6A9AC8" opacity="0.95"/>
+
+        <!-- Gold trim / door details -->
+        <path d="M88,72 Q100,78 112,72" stroke="#E8C860" stroke-width="1.8" fill="none"/>
+        <circle cx="100" cy="63" r="2" fill="#E8C860"/>
+        <!-- Decorative gold swirls on sides -->
+        <path d="M65,55 Q70,60 68,68" stroke="#E8C860" stroke-width="0.8" fill="none" opacity="0.9"/>
+        <path d="M135,55 Q130,60 132,68" stroke="#E8C860" stroke-width="0.8" fill="none" opacity="0.9"/>
+
+        <!-- Axle connectors (silver) -->
+        <rect x="60" y="85" width="20" height="4" rx="2" fill="#8AA0BE"/>
+        <rect x="120" y="85" width="20" height="4" rx="2" fill="#8AA0BE"/>
+
+        <!-- Sparkles around carriage -->
+        <text x="18" y="38" font-size="10" fill="rgba(255,255,255,0.9)" font-family="serif">✦</text>
+        <text x="170" y="30" font-size="8" fill="rgba(200,230,255,0.9)" font-family="serif">✦</text>
+        <text x="5" y="65" font-size="7" fill="rgba(200,180,255,0.85)" font-family="serif">✧</text>
+        <text x="182" y="58" font-size="9" fill="rgba(200,230,255,0.9)" font-family="serif">✧</text>
+        <text x="90" y="18" font-size="10" fill="rgba(255,240,180,0.9)" font-family="serif">✦</text>
+      </svg>
+    </div>
+
+    <div class="info-card">
+      <div class="info-row">
+        <span class="info-icon">🗓️</span>
+        <div class="info-text">
+          <span class="info-label">Data</span>
+          <span class="info-value"><strong>Sábado, 25 de Abril de 2026</strong></span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">🕓</span>
+        <div class="info-text">
+          <span class="info-label">Hora</span>
+          <span class="info-value"><strong>A partir das 16h00</strong></span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">🎂</span>
+        <div class="info-text">
+          <span class="info-label">Programa</span>
+          <span class="info-value">Bolo de aniversário, petiscos e bebidas para toda a família 🥂🍰</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-gem">🩰</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Blue slippers - Cinderella style -->
+    <div class="shoe-wrap">
+      <span class="blue-shoe-emoji">🥿</span>
+      <span class="shoe-sparkle">✨</span>
+      <span class="blue-shoe-emoji" style="transform:scaleX(-1);display:inline-block;">🥿</span>
+    </div>
+
+    <div class="footer-note">
+      Contamos com a vossa presença<br>
+      para tornar este dia verdadeiramente mágico! 🌸<br><br>
+      <em>Feliz aniversário, Sophia! 💗</em>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
